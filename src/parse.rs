@@ -1,0 +1,1 @@
+//! SQL → IR via `sqlparser`.

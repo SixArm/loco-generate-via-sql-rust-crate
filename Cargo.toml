@@ -2,5 +2,21 @@
 name = "loco-generate-scaffold-via-sql-schema"
 version = "0.1.0"
 edition = "2024"
+description = "Convert SQL CREATE TABLE statements from stdin to `cargo loco generate scaffold` commands on stdout."
+license = "MIT OR Apache-2.0"
+
+[lib]
+name = "loco_generate_scaffold_via_sql_schema"
+path = "src/lib.rs"
+
+[[bin]]
+name = "loco-generate-scaffold-via-sql-schema"
+path = "src/main.rs"
 
 [dependencies]
+sqlparser = "0.61"
+clap = { version = "4", features = ["derive"] }
+thiserror = "1"
+
+[dev-dependencies]
+assert_cmd = "2"
