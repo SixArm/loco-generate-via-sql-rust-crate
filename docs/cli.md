@@ -1,12 +1,12 @@
 # CLI reference
 
-The `loco-generate-scaffold-via-sql-schema` binary is a filter: it reads SQL
+The `loco-generate-via-sql` binary is a filter: it reads SQL
 from stdin and writes `cargo loco generate scaffold` commands to stdout.
 
 ## Synopsis
 
 ```
-loco-generate-scaffold-via-sql-schema [OPTIONS]
+loco-generate-via-sql [OPTIONS]
 ```
 
 ## Options
@@ -69,20 +69,20 @@ Print version (matches `Cargo.toml` `version = "..."`).
 **Print commands to terminal:**
 
 ```sh
-loco-generate-scaffold-via-sql-schema < schema.sql
+loco-generate-via-sql < schema.sql
 ```
 
 **Save to a runnable script:**
 
 ```sh
-loco-generate-scaffold-via-sql-schema < schema.sql > setup.sh
+loco-generate-via-sql < schema.sql > setup.sh
 sh setup.sh
 ```
 
 **Run scaffolds inline:**
 
 ```sh
-loco-generate-scaffold-via-sql-schema < schema.sql | sh -e
+loco-generate-via-sql < schema.sql | sh -e
 ```
 
 `-e` makes the shell exit if any individual scaffold fails, so you don't
@@ -91,20 +91,20 @@ silently skip past errors.
 **Compare output to an expected snapshot:**
 
 ```sh
-loco-generate-scaffold-via-sql-schema < schema.sql | diff - expected.txt
+loco-generate-via-sql < schema.sql | diff - expected.txt
 ```
 
 **Run with a non-default dialect and kind:**
 
 ```sh
-loco-generate-scaffold-via-sql-schema -d mysql -k api < schema.sql
+loco-generate-via-sql -d mysql -k api < schema.sql
 ```
 
 **Filter the output before running** — e.g., only run scaffolds for tables
 matching a pattern:
 
 ```sh
-loco-generate-scaffold-via-sql-schema < schema.sql \
+loco-generate-via-sql < schema.sql \
     | grep '^cargo loco generate scaffold post' \
     | sh -e
 ```
@@ -112,13 +112,13 @@ loco-generate-scaffold-via-sql-schema < schema.sql \
 **Suppress warnings:**
 
 ```sh
-loco-generate-scaffold-via-sql-schema < schema.sql 2>/dev/null
+loco-generate-via-sql < schema.sql 2>/dev/null
 ```
 
 **Capture warnings only:**
 
 ```sh
-loco-generate-scaffold-via-sql-schema < schema.sql 2>warnings.log >/dev/null
+loco-generate-via-sql < schema.sql 2>warnings.log >/dev/null
 ```
 
 ## Tips

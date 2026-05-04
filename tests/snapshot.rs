@@ -1,4 +1,4 @@
-use loco_generate_scaffold_via_sql_schema::{Dialect, Options, ScaffoldKind, convert};
+use loco_generate_via_sql::{Dialect, Options, ScaffoldKind, convert};
 
 fn opts(d: Dialect, k: ScaffoldKind) -> Options {
     Options { dialect: d, kind: k }
@@ -131,7 +131,7 @@ fn schema_qualified_table_name_uses_last_segment() {
 #[test]
 fn binary_smoke_test_via_assert_cmd() {
     use assert_cmd::Command;
-    let mut cmd = Command::cargo_bin("loco-generate-scaffold-via-sql-schema").unwrap();
+    let mut cmd = Command::cargo_bin("loco-generate-via-sql").unwrap();
     cmd.write_stdin("CREATE TABLE posts (id SERIAL PRIMARY KEY, title TEXT NOT NULL);")
         .assert()
         .success()
@@ -141,7 +141,7 @@ fn binary_smoke_test_via_assert_cmd() {
 #[test]
 fn binary_smoke_test_kind_none() {
     use assert_cmd::Command;
-    let mut cmd = Command::cargo_bin("loco-generate-scaffold-via-sql-schema").unwrap();
+    let mut cmd = Command::cargo_bin("loco-generate-via-sql").unwrap();
     cmd.args(["--kind", "none"])
         .write_stdin("CREATE TABLE posts (id SERIAL PRIMARY KEY, title TEXT NOT NULL);")
         .assert()
@@ -152,7 +152,7 @@ fn binary_smoke_test_kind_none() {
 #[test]
 fn binary_exits_nonzero_on_parse_error() {
     use assert_cmd::Command;
-    let mut cmd = Command::cargo_bin("loco-generate-scaffold-via-sql-schema").unwrap();
+    let mut cmd = Command::cargo_bin("loco-generate-via-sql").unwrap();
     cmd.write_stdin("CREATE TABLE (oops")
         .assert()
         .failure()

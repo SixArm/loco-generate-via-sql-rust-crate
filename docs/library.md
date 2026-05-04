@@ -8,7 +8,7 @@ a custom developer tool, or an editor integration.
 
 ```toml
 [dependencies]
-loco-generate-scaffold-via-sql-schema = "0.1"
+loco-generate-via-sql = "0.1"
 ```
 
 ## Public API
@@ -36,7 +36,7 @@ pub enum ConvertError { Parse(String), Io(std::io::Error) }
 ### Parse and print
 
 ```rust
-use loco_generate_scaffold_via_sql_schema::{convert, Options};
+use loco_generate_via_sql::{convert, Options};
 
 let sql = std::fs::read_to_string("schema.sql")?;
 let (commands, warnings) = convert(&sql, &Options::default())?;
@@ -51,7 +51,7 @@ print!("{commands}");
 ### Stream into an arbitrary writer
 
 ```rust
-use loco_generate_scaffold_via_sql_schema::{convert_to_writer, Options};
+use loco_generate_via_sql::{convert_to_writer, Options};
 use std::fs::File;
 use std::io::BufWriter;
 
@@ -65,7 +65,7 @@ let warnings = convert_to_writer(sql, &Options::default(), &mut writer)?;
 ### Pick dialect and kind explicitly
 
 ```rust
-use loco_generate_scaffold_via_sql_schema::{convert, Dialect, Options, ScaffoldKind};
+use loco_generate_via_sql::{convert, Dialect, Options, ScaffoldKind};
 
 let opts = Options { dialect: Dialect::MySql, kind: ScaffoldKind::Api };
 let sql = "CREATE TABLE widgets (id INT UNSIGNED NOT NULL, qty INT UNSIGNED NOT NULL);";
@@ -77,7 +77,7 @@ assert_eq!(out, "cargo loco generate scaffold widgets qty:unsigned! --api\n");
 ### Ignore warnings
 
 ```rust
-use loco_generate_scaffold_via_sql_schema::{convert, Options};
+use loco_generate_via_sql::{convert, Options};
 
 let sql = "CREATE TABLE x (q WIDGET);";
 let commands = convert(sql, &Options::default())?.0;  // .0 = String, .1 = Vec<Warning>
@@ -87,7 +87,7 @@ let commands = convert(sql, &Options::default())?.0;  // .0 = String, .1 = Vec<W
 ### Treat warnings as failures
 
 ```rust
-use loco_generate_scaffold_via_sql_schema::{convert, Options};
+use loco_generate_via_sql::{convert, Options};
 
 let sql = "CREATE TABLE x (q WIDGET);";
 let (commands, warnings) = convert(sql, &Options::default())?;
@@ -100,7 +100,7 @@ if !warnings.is_empty() {
 ### Match on errors
 
 ```rust
-use loco_generate_scaffold_via_sql_schema::{convert, ConvertError, Options};
+use loco_generate_via_sql::{convert, ConvertError, Options};
 
 match convert("CREATE TABLE (oops", &Options::default()) {
     Ok((out, _)) => print!("{out}"),
@@ -121,7 +121,7 @@ match convert("CREATE TABLE (oops", &Options::default()) {
 ## Build a tiny in-process REPL
 
 ```rust
-use loco_generate_scaffold_via_sql_schema::{convert, Options};
+use loco_generate_via_sql::{convert, Options};
 use std::io::{self, BufRead, Write};
 
 let opts = Options::default();
@@ -148,7 +148,7 @@ print!("{commands}");
 For the canonical, always-current API reference:
 
 ```sh
-cargo doc --open --no-deps -p loco-generate-scaffold-via-sql-schema
+cargo doc --open --no-deps -p loco-generate-via-sql
 ```
 
 Includes runnable doctests for each public function.

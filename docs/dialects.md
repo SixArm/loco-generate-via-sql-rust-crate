@@ -13,7 +13,7 @@ dialect only if generic mis-parses something.
 ## `postgres`
 
 ```sh
-loco-generate-scaffold-via-sql-schema -d postgres < schema.sql
+loco-generate-via-sql -d postgres < schema.sql
 ```
 
 Recognizes:
@@ -48,7 +48,7 @@ CREATE TABLE posts (
 ## `mysql`
 
 ```sh
-loco-generate-scaffold-via-sql-schema -d mysql < schema.sql
+loco-generate-via-sql -d mysql < schema.sql
 ```
 
 Recognizes:
@@ -82,7 +82,7 @@ CREATE TABLE products (
 ## `sqlite`
 
 ```sh
-loco-generate-scaffold-via-sql-schema -d sqlite < schema.sql
+loco-generate-via-sql -d sqlite < schema.sql
 ```
 
 Recognizes:
@@ -115,7 +115,7 @@ backed by a 0/1.
 ## `generic`
 
 ```sh
-loco-generate-scaffold-via-sql-schema -d generic < schema.sql
+loco-generate-via-sql -d generic < schema.sql
 ```
 
 Permissive grammar — accepts most syntax from any of the dialects above.
@@ -138,8 +138,8 @@ MySQL conventions, neither dialect will parse it cleanly. Two options:
 1. **Split the schema** into per-dialect files and run the tool once per
    file:
    ```sh
-   loco-generate-scaffold-via-sql-schema -d postgres < pg-tables.sql > pg.sh
-   loco-generate-scaffold-via-sql-schema -d mysql    < my-tables.sql > my.sh
+   loco-generate-via-sql -d postgres < pg-tables.sql > pg.sh
+   loco-generate-via-sql -d mysql    < my-tables.sql > my.sh
    cat pg.sh my.sh > setup.sh
    ```
 
@@ -161,7 +161,7 @@ MySQL conventions, neither dialect will parse it cleanly. Two options:
 After picking a dialect, do a quick:
 
 ```sh
-your-schema-dump | loco-generate-scaffold-via-sql-schema -d <dialect> 2>warns.log >cmds.sh
+your-schema-dump | loco-generate-via-sql -d <dialect> 2>warns.log >cmds.sh
 ```
 
 …and inspect both `cmds.sh` (commands) and `warns.log` (any unknown types

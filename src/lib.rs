@@ -1,7 +1,7 @@
 //! Convert SQL `CREATE TABLE` statements into `cargo loco generate scaffold` commands.
 //!
 //! This crate is the library half of the
-//! [`loco-generate-scaffold-via-sql-schema`](https://crates.io/crates/loco-generate-scaffold-via-sql-schema)
+//! [`loco-generate-via-sql`](https://crates.io/crates/loco-generate-via-sql)
 //! tool. The binary reads SQL from stdin and writes scaffold commands to stdout;
 //! the library exposes the same conversion as a function callable from any Rust
 //! program.
@@ -32,7 +32,7 @@
 //! # Quick example
 //!
 //! ```
-//! use loco_generate_scaffold_via_sql_schema::{convert, Options};
+//! use loco_generate_via_sql::{convert, Options};
 //!
 //! let sql = "CREATE TABLE posts (id SERIAL PRIMARY KEY, title TEXT NOT NULL);";
 //! let (commands, warnings) = convert(sql, &Options::default()).unwrap();
@@ -51,7 +51,7 @@
 //! command. The default is Postgres + Htmx.
 //!
 //! ```
-//! use loco_generate_scaffold_via_sql_schema::{convert, Dialect, Options, ScaffoldKind};
+//! use loco_generate_via_sql::{convert, Dialect, Options, ScaffoldKind};
 //!
 //! let opts = Options { dialect: Dialect::MySql, kind: ScaffoldKind::Api };
 //! let sql = "CREATE TABLE widgets (id INT UNSIGNED NOT NULL, qty INT UNSIGNED NOT NULL);";
@@ -104,7 +104,7 @@
 //!
 //! # See also
 //!
-//! - The CLI binary `loco-generate-scaffold-via-sql-schema` — same conversion,
+//! - The CLI binary `loco-generate-via-sql` — same conversion,
 //!   driven by stdin/stdout. Run `--help` for flags.
 //! - [Loco docs](https://loco.rs/docs/the-app/models/) for the canonical
 //!   `cargo loco generate scaffold` syntax this tool emits.
@@ -163,7 +163,7 @@ pub enum ScaffoldKind {
 /// # Examples
 ///
 /// ```
-/// use loco_generate_scaffold_via_sql_schema::{Dialect, Options, ScaffoldKind};
+/// use loco_generate_via_sql::{Dialect, Options, ScaffoldKind};
 ///
 /// let pg_htmx = Options::default(); // Postgres + Htmx
 ///
@@ -240,7 +240,7 @@ pub enum ConvertError {
 /// One table:
 ///
 /// ```
-/// use loco_generate_scaffold_via_sql_schema::{convert, Options};
+/// use loco_generate_via_sql::{convert, Options};
 ///
 /// let sql = "CREATE TABLE posts (id SERIAL PRIMARY KEY, title TEXT NOT NULL);";
 /// let (out, warnings) = convert(sql, &Options::default()).unwrap();
@@ -252,7 +252,7 @@ pub enum ConvertError {
 /// Multiple tables — separated by a blank line:
 ///
 /// ```
-/// use loco_generate_scaffold_via_sql_schema::{convert, Options};
+/// use loco_generate_via_sql::{convert, Options};
 ///
 /// let sql = "CREATE TABLE a (id SERIAL PRIMARY KEY, x TEXT NOT NULL); \
 ///            CREATE TABLE b (id SERIAL PRIMARY KEY, y TEXT NOT NULL);";
@@ -268,7 +268,7 @@ pub enum ConvertError {
 /// Empty input → empty output, no error:
 ///
 /// ```
-/// use loco_generate_scaffold_via_sql_schema::{convert, Options};
+/// use loco_generate_via_sql::{convert, Options};
 ///
 /// let (out, w) = convert("", &Options::default()).unwrap();
 /// assert!(out.is_empty());
@@ -278,7 +278,7 @@ pub enum ConvertError {
 /// Unknown type → warning, falls back to `string`:
 ///
 /// ```
-/// use loco_generate_scaffold_via_sql_schema::{convert, Options};
+/// use loco_generate_via_sql::{convert, Options};
 ///
 /// let (_, warnings) = convert(
 ///     "CREATE TABLE x (q WIDGET);",
@@ -320,7 +320,7 @@ pub fn convert(sql: &str, opts: &Options) -> Result<(String, Vec<Warning>), Conv
 /// Write into a `Vec<u8>` buffer:
 ///
 /// ```
-/// use loco_generate_scaffold_via_sql_schema::{convert_to_writer, Options};
+/// use loco_generate_via_sql::{convert_to_writer, Options};
 ///
 /// let sql = "CREATE TABLE posts (id SERIAL PRIMARY KEY, title TEXT NOT NULL);";
 /// let mut buf: Vec<u8> = Vec::new();

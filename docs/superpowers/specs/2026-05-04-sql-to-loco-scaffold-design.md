@@ -29,7 +29,7 @@ Out of scope:
 ## Architecture
 
 ```
-loco-generate-scaffold-via-sql-schema/
+loco-generate-via-sql/
 ├── Cargo.toml              # edition 2024, deps: sqlparser, clap (derive), thiserror
 ├── src/
 │   ├── lib.rs              # public API + Options
@@ -182,7 +182,7 @@ cargo loco generate scaffold <table> <field1> <field2> … [--htmx|--html|--api]
 ## CLI surface
 
 ```
-loco-generate-scaffold-via-sql-schema [OPTIONS]
+loco-generate-via-sql [OPTIONS]
 
 Reads SQL from stdin and writes `cargo loco generate scaffold` commands to stdout.
 
@@ -198,8 +198,8 @@ OPTIONS:
 Examples:
 
 ```sh
-cat schema.sql | loco-generate-scaffold-via-sql-schema > setup-commands.sh
-loco-generate-scaffold-via-sql-schema -d sqlite -k api < schema.sql
+cat schema.sql | loco-generate-via-sql > setup-commands.sh
+loco-generate-via-sql -d sqlite -k api < schema.sql
 ```
 
 `clap` with derive macros. No subcommands — the tool does one thing.

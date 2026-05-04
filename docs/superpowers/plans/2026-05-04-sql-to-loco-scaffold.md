@@ -44,18 +44,18 @@ Replace contents of `Cargo.toml`:
 
 ```toml
 [package]
-name = "loco-generate-scaffold-via-sql-schema"
+name = "loco-generate-via-sql"
 version = "0.1.0"
 edition = "2024"
 description = "Convert SQL CREATE TABLE statements from stdin to `cargo loco generate scaffold` commands on stdout."
 license = "MIT OR Apache-2.0"
 
 [lib]
-name = "loco_generate_scaffold_via_sql_schema"
+name = "loco_generate_via_sql"
 path = "src/lib.rs"
 
 [[bin]]
-name = "loco-generate-scaffold-via-sql-schema"
+name = "loco-generate-via-sql"
 path = "src/main.rs"
 
 [dependencies]
@@ -1395,14 +1395,14 @@ use std::io::{Read, Write};
 use std::process::ExitCode;
 
 use clap::{Parser, ValueEnum};
-use loco_generate_scaffold_via_sql_schema::{
+use loco_generate_via_sql::{
     ConvertError, Dialect, Options, ScaffoldKind, convert,
 };
 
 /// Convert SQL CREATE TABLE statements from stdin into
 /// `cargo loco generate scaffold` commands on stdout.
 #[derive(Debug, Parser)]
-#[command(name = "loco-generate-scaffold-via-sql-schema", version, about)]
+#[command(name = "loco-generate-via-sql", version, about)]
 struct Args {
     /// SQL dialect to parse with.
     #[arg(short, long, value_enum, default_value_t = DialectArg::Postgres)]
@@ -1521,7 +1521,7 @@ git commit -m "feat(cli): clap-based binary reads stdin, writes stdout"
 Create `tests/snapshot.rs`:
 
 ```rust
-use loco_generate_scaffold_via_sql_schema::{Dialect, Options, ScaffoldKind, convert};
+use loco_generate_via_sql::{Dialect, Options, ScaffoldKind, convert};
 
 fn opts(d: Dialect, k: ScaffoldKind) -> Options {
     Options { dialect: d, kind: k }
@@ -1654,7 +1654,7 @@ fn schema_qualified_table_name_uses_last_segment() {
 #[test]
 fn binary_smoke_test_via_assert_cmd() {
     use assert_cmd::Command;
-    let mut cmd = Command::cargo_bin("loco-generate-scaffold-via-sql-schema").unwrap();
+    let mut cmd = Command::cargo_bin("loco-generate-via-sql").unwrap();
     cmd.write_stdin("CREATE TABLE posts (id SERIAL PRIMARY KEY, title TEXT NOT NULL);")
         .assert()
         .success()
@@ -1664,7 +1664,7 @@ fn binary_smoke_test_via_assert_cmd() {
 #[test]
 fn binary_smoke_test_kind_none() {
     use assert_cmd::Command;
-    let mut cmd = Command::cargo_bin("loco-generate-scaffold-via-sql-schema").unwrap();
+    let mut cmd = Command::cargo_bin("loco-generate-via-sql").unwrap();
     cmd.args(["--kind", "none"])
         .write_stdin("CREATE TABLE posts (id SERIAL PRIMARY KEY, title TEXT NOT NULL);")
         .assert()
@@ -1675,7 +1675,7 @@ fn binary_smoke_test_kind_none() {
 #[test]
 fn binary_exits_nonzero_on_parse_error() {
     use assert_cmd::Command;
-    let mut cmd = Command::cargo_bin("loco-generate-scaffold-via-sql-schema").unwrap();
+    let mut cmd = Command::cargo_bin("loco-generate-via-sql").unwrap();
     cmd.write_stdin("CREATE TABLE (oops")
         .assert()
         .failure()
@@ -1714,7 +1714,7 @@ git commit -m "test: integration snapshot tests for full pipeline"
 Create `README.md`:
 
 ```markdown
-# loco-generate-scaffold-via-sql-schema
+# loco-generate-via-sql
 
 Read SQL `CREATE TABLE` statements from stdin and write equivalent
 `cargo loco generate scaffold` commands to stdout.
@@ -1728,8 +1728,8 @@ cargo install --path .
 ## Use
 
 ```sh
-cat schema.sql | loco-generate-scaffold-via-sql-schema > setup.sh
-loco-generate-scaffold-via-sql-schema -d mysql -k api < schema.sql
+cat schema.sql | loco-generate-via-sql > setup.sh
+loco-generate-via-sql -d mysql -k api < schema.sql
 ```
 
 ## Options
@@ -1752,7 +1752,7 @@ loco-generate-scaffold-via-sql-schema -d mysql -k api < schema.sql
 ## Library
 
 ```rust
-use loco_generate_scaffold_via_sql_schema::{convert, Options};
+use loco_generate_via_sql::{convert, Options};
 let (commands, warnings) = convert(sql, &Options::default())?;
 ```
 
@@ -1785,7 +1785,7 @@ Expected: PASS — no errors, warnings acceptable.
 
 Run:
 ```sh
-cat <<'SQL' | ./target/release/loco-generate-scaffold-via-sql-schema
+cat <<'SQL' | ./target/release/loco-generate-via-sql
 CREATE TABLE authors (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,

@@ -2,7 +2,7 @@ use std::io::{Read, Write};
 use std::process::ExitCode;
 
 use clap::{Parser, ValueEnum};
-use loco_generate_scaffold_via_sql_schema::{
+use loco_generate_via_sql::{
     ConvertError, Dialect, Options, ScaffoldKind, convert,
 };
 
@@ -10,7 +10,7 @@ use loco_generate_scaffold_via_sql_schema::{
 /// `cargo loco generate scaffold` commands on stdout.
 #[derive(Debug, Parser)]
 #[command(
-    name = "loco-generate-scaffold-via-sql-schema",
+    name = "loco-generate-via-sql",
     version,
     about,
     long_about = LONG_ABOUT,
@@ -58,7 +58,7 @@ command.
 }
 
 const LONG_ABOUT: &str = "\
-loco-generate-scaffold-via-sql-schema reads SQL from stdin and writes one
+loco-generate-via-sql reads SQL from stdin and writes one
 `cargo loco generate scaffold` command to stdout per CREATE TABLE.
 
 The output is plain shell commands — pipe into `bash` to run, redirect to
@@ -82,22 +82,22 @@ Exit codes:
 const AFTER_HELP: &str = "\
 EXAMPLES:
   # Print scaffold commands to terminal:
-  loco-generate-scaffold-via-sql-schema < schema.sql
+  loco-generate-via-sql < schema.sql
 
   # Save to a runnable script:
-  loco-generate-scaffold-via-sql-schema < schema.sql > setup.sh
+  loco-generate-via-sql < schema.sql > setup.sh
 
   # Run scaffolds inline (-e aborts on any failure):
-  loco-generate-scaffold-via-sql-schema < schema.sql | sh -e
+  loco-generate-via-sql < schema.sql | sh -e
 
   # MySQL schema, API-only scaffolds:
-  loco-generate-scaffold-via-sql-schema -d mysql -k api < shop.sql
+  loco-generate-via-sql -d mysql -k api < shop.sql
 
   # Suppress warnings:
-  loco-generate-scaffold-via-sql-schema < schema.sql 2>/dev/null
+  loco-generate-via-sql < schema.sql 2>/dev/null
 
 DOCS:
-  Full guide:        https://github.com/sixarm/loco-generate-scaffold-via-sql-schema
+  Full guide:        https://github.com/sixarm/loco-generate-via-sql
   Type mapping:      docs/types.md
   Foreign-key rules: docs/foreign-keys.md
   Dialect notes:     docs/dialects.md

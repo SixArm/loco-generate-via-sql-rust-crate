@@ -19,23 +19,23 @@ behavioral changes show up immediately.
 From the repo root, after `cargo build --release`:
 
 ```sh
-./target/release/loco-generate-scaffold-via-sql-schema \
+./target/release/loco-generate-via-sql \
     < examples/blog-postgres.sql
 
-./target/release/loco-generate-scaffold-via-sql-schema -d mysql \
+./target/release/loco-generate-via-sql -d mysql \
     < examples/shop-mysql.sql
 
-./target/release/loco-generate-scaffold-via-sql-schema -d sqlite \
+./target/release/loco-generate-via-sql -d sqlite \
     < examples/notes-sqlite.sql
 
-./target/release/loco-generate-scaffold-via-sql-schema \
+./target/release/loco-generate-via-sql \
     < examples/fk-rules.sql
 ```
 
 Or installed:
 
 ```sh
-loco-generate-scaffold-via-sql-schema < examples/blog-postgres.sql
+loco-generate-via-sql < examples/blog-postgres.sql
 ```
 
 ## Diffing against the expected output
@@ -44,7 +44,7 @@ The shipped tool produces output byte-identical to the matching `.expected`
 file. To verify — for example after editing the SQL or rebuilding the tool:
 
 ```sh
-diff <(./target/release/loco-generate-scaffold-via-sql-schema \
+diff <(./target/release/loco-generate-via-sql \
         < examples/blog-postgres.sql) examples/blog-postgres.expected
 ```
 

@@ -16,7 +16,7 @@ includes the offending token and approximate position.
    `SET`, `BEGIN`, `COPY`, comments, etc. Most of those are skipped, but
    exotic statements occasionally fail. Try filtering:
    ```sh
-   awk '/^CREATE TABLE/,/;/' schema.sql | loco-generate-scaffold-via-sql-schema
+   awk '/^CREATE TABLE/,/;/' schema.sql | loco-generate-via-sql
    ```
 3. **Check for unbalanced parens.** A truncated dump or hand-edited file
    might have an unclosed `CREATE TABLE`. The error usually says so
@@ -124,7 +124,7 @@ That's a Loco issue, not this tool's — but a few common causes:
 ## I want to suppress all warnings
 
 ```sh
-loco-generate-scaffold-via-sql-schema < schema.sql 2>/dev/null
+loco-generate-via-sql < schema.sql 2>/dev/null
 ```
 
 …or, in library use:
@@ -138,7 +138,7 @@ let (commands, _) = convert(&sql, &opts)?;
 ## I want to fail on any warning
 
 ```sh
-out=$(loco-generate-scaffold-via-sql-schema < schema.sql 2>warns.log)
+out=$(loco-generate-via-sql < schema.sql 2>warns.log)
 if [ -s warns.log ]; then
     echo "schema has warnings:" >&2
     cat warns.log >&2
@@ -177,4 +177,4 @@ Open an issue with:
 - The exact SQL that triggered the problem (minimum reproducer ideal).
 - The dialect flag you used.
 - The expected output and the actual output.
-- The tool version (`loco-generate-scaffold-via-sql-schema --version`).
+- The tool version (`loco-generate-via-sql --version`).

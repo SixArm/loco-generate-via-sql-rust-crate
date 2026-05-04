@@ -1,4 +1,4 @@
-# loco-generate-scaffold-via-sql-schema
+# loco-generate-via-sql
 
 Read SQL `CREATE TABLE` statements from stdin and write equivalent
 `cargo loco generate scaffold` commands to stdout — one per table, blank-line
@@ -6,7 +6,7 @@ separated, ready to pipe into a shell.
 
 ```sh
 $ echo 'CREATE TABLE posts (id SERIAL PRIMARY KEY, title TEXT NOT NULL);' \
-    | loco-generate-scaffold-via-sql-schema
+    | loco-generate-via-sql
 cargo loco generate scaffold posts title:text! --htmx
 ```
 
@@ -63,20 +63,20 @@ From a clone:
 cargo install --path .
 ```
 
-The binary is installed to `~/.cargo/bin/loco-generate-scaffold-via-sql-schema`.
+The binary is installed to `~/.cargo/bin/loco-generate-via-sql`.
 
 ## Quick start
 
 **1. Pipe a schema in, see the commands:**
 
 ```sh
-cat schema.sql | loco-generate-scaffold-via-sql-schema
+cat schema.sql | loco-generate-via-sql
 ```
 
 **2. Save to a runnable script:**
 
 ```sh
-cat schema.sql | loco-generate-scaffold-via-sql-schema > setup.sh
+cat schema.sql | loco-generate-via-sql > setup.sh
 chmod +x setup.sh
 ./setup.sh
 ```
@@ -84,19 +84,19 @@ chmod +x setup.sh
 **3. Run directly:**
 
 ```sh
-cat schema.sql | loco-generate-scaffold-via-sql-schema | sh -e
+cat schema.sql | loco-generate-via-sql | sh -e
 ```
 
 **4. Different dialect or scaffold kind:**
 
 ```sh
-cat schema.sql | loco-generate-scaffold-via-sql-schema -d mysql -k api
+cat schema.sql | loco-generate-via-sql -d mysql -k api
 ```
 
 ## CLI reference
 
 ```
-loco-generate-scaffold-via-sql-schema [OPTIONS]
+loco-generate-via-sql [OPTIONS]
 
 OPTIONS:
   -d, --dialect <DIALECT>  SQL dialect: postgres | mysql | sqlite | generic
@@ -271,11 +271,11 @@ The conversion is also a library function. Add to `Cargo.toml`:
 
 ```toml
 [dependencies]
-loco-generate-scaffold-via-sql-schema = "0.1"
+loco-generate-via-sql = "0.1"
 ```
 
 ```rust
-use loco_generate_scaffold_via_sql_schema::{convert, Dialect, Options, ScaffoldKind};
+use loco_generate_via_sql::{convert, Dialect, Options, ScaffoldKind};
 
 let sql = std::fs::read_to_string("schema.sql")?;
 let opts = Options { dialect: Dialect::Postgres, kind: ScaffoldKind::Htmx };
@@ -292,7 +292,7 @@ There's also `convert_to_writer` for streaming directly into any
 [`std::io::Write`]:
 
 ```rust
-use loco_generate_scaffold_via_sql_schema::{convert_to_writer, Options};
+use loco_generate_via_sql::{convert_to_writer, Options};
 use std::io::stdout;
 
 let sql = "CREATE TABLE posts (id SERIAL PRIMARY KEY, title TEXT NOT NULL);";
@@ -330,7 +330,7 @@ expected outputs:
 Run any of them:
 
 ```sh
-loco-generate-scaffold-via-sql-schema < examples/blog-postgres.sql
+loco-generate-via-sql < examples/blog-postgres.sql
 ```
 
 …and compare to `examples/blog-postgres.expected`.

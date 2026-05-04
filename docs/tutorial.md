@@ -65,7 +65,7 @@ CREATE TABLE comments (
 ## 3. Generate the scaffold commands
 
 ```sh
-loco-generate-scaffold-via-sql-schema < schema.sql
+loco-generate-via-sql < schema.sql
 ```
 
 Output:
@@ -93,7 +93,7 @@ Note:
 Pipe into a script you can review before running:
 
 ```sh
-loco-generate-scaffold-via-sql-schema < schema.sql > setup.sh
+loco-generate-via-sql < schema.sql > setup.sh
 cat setup.sh   # eyeball it
 ```
 
@@ -114,7 +114,7 @@ Each `cargo loco generate scaffold` call creates:
 Or run the scaffolds inline without an intermediate file:
 
 ```sh
-loco-generate-scaffold-via-sql-schema < schema.sql | sh -e
+loco-generate-via-sql < schema.sql | sh -e
 ```
 
 The `-e` ensures any individual scaffold failure aborts the whole run.
@@ -163,13 +163,13 @@ The scaffold gives you a working baseline. From here:
 ### Use HTML scaffolds instead of HTMX
 
 ```sh
-loco-generate-scaffold-via-sql-schema -k html < schema.sql | sh -e
+loco-generate-via-sql -k html < schema.sql | sh -e
 ```
 
 ### Use API-only scaffolds
 
 ```sh
-loco-generate-scaffold-via-sql-schema -k api < schema.sql | sh -e
+loco-generate-via-sql -k api < schema.sql | sh -e
 ```
 
 ### Use SQLite instead of Postgres
@@ -179,7 +179,7 @@ using SQLite syntax (`INTEGER PRIMARY KEY AUTOINCREMENT` instead of
 `SERIAL PRIMARY KEY`, etc.) and pass `-d sqlite`:
 
 ```sh
-loco-generate-scaffold-via-sql-schema -d sqlite < schema.sql | sh -e
+loco-generate-via-sql -d sqlite < schema.sql | sh -e
 ```
 
 ## See also

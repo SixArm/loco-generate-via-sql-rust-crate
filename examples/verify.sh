@@ -4,7 +4,7 @@
 
 set -eu
 
-BIN="${BIN:-./target/release/loco-generate-scaffold-via-sql-schema}"
+BIN="${BIN:-./target/release/loco-generate-via-sql}"
 
 if [ ! -x "$BIN" ]; then
     echo "error: binary not found at $BIN" >&2
