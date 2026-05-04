@@ -1,0 +1,5 @@
+cargo loco generate scaffold users name:text! --htmx
+
+cargo loco generate scaffold authors name:text! --htmx
+
+cargo loco generate scaffold posts author:references user:references:owner_id user:references:editor title:text! --htmx

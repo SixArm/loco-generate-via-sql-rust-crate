@@ -1,0 +1,7 @@
+cargo loco generate scaffold customers email:string!^ name:string! active:bool! notes:text --htmx
+
+cargo loco generate scaffold products sku:string!^ name:string! description:text price:decimal! stock:unsigned! active:bool! --htmx
+
+cargo loco generate scaffold orders customer:references total:decimal! placed_at:date_time! paid:bool! --htmx
+
+cargo loco generate scaffold order_items order:references product:references quantity:unsigned! unit_price:decimal! --htmx

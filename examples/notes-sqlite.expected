@@ -1,0 +1,5 @@
+cargo loco generate scaffold notebooks name:text!^ color:text --htmx
+
+cargo loco generate scaffold notes notebook:references title:text! body:text pinned:int! --htmx
+
+cargo loco generate scaffold attachments note:references filename:text! data:blob! --htmx
