@@ -88,10 +88,10 @@ fn table_from_create(
         if unique_singles.iter().any(|n| n == &col.name) {
             col.unique = true;
         }
-        if col.fk.is_none() {
-            if let Some((_, fk)) = tbl_fks.iter().find(|(n, _)| n == &col.name) {
-                col.fk = Some(fk.clone());
-            }
+        if col.fk.is_none()
+            && let Some((_, fk)) = tbl_fks.iter().find(|(n, _)| n == &col.name)
+        {
+            col.fk = Some(fk.clone());
         }
         cols.push(col);
     }
@@ -163,7 +163,7 @@ fn sql_type_repr(dt: &DataType) -> SqlTypeRepr {
     let (canonical, args, unsigned, array) = match dt {
         Uuid => ("UUID".to_string(), vec![], false, false),
         Boolean | Bool => ("BOOL".to_string(), vec![], false, false),
-        TinyInt(n) => ("TINYINT".to_string(), n.iter().copied().map(|n| n).collect(), false, false),
+        TinyInt(n) => ("TINYINT".to_string(), n.iter().copied().collect(), false, false),
         TinyIntUnsigned(n) => ("TINYINT".to_string(), n.iter().copied().collect(), true, false),
         SmallInt(n) => ("SMALLINT".to_string(), n.iter().copied().collect(), false, false),
         SmallIntUnsigned(n) => ("SMALLINT".to_string(), n.iter().copied().collect(), true, false),
@@ -230,8 +230,8 @@ fn exact_args(info: &sqlparser::ast::ExactNumberInfo) -> Vec<u64> {
     use sqlparser::ast::ExactNumberInfo;
     match info {
         ExactNumberInfo::None => vec![],
-        ExactNumberInfo::Precision(p) => vec![*p as u64],
-        ExactNumberInfo::PrecisionAndScale(p, s) => vec![*p as u64, *s as u64],
+        ExactNumberInfo::Precision(p) => vec![*p],
+        ExactNumberInfo::PrecisionAndScale(p, s) => vec![*p, *s as u64],
     }
 }
 

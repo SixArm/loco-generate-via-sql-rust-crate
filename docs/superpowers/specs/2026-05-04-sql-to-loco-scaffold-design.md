@@ -55,10 +55,10 @@ pub struct Options {
 pub enum Dialect { Postgres, MySql, SQLite, Generic }
 pub enum ScaffoldKind { Htmx, Html, Api, None }
 
-pub fn convert(sql: &str, opts: &Options) -> Result<String, ConvertError>;
+pub fn convert(sql: &str, opts: &Options) -> Result<(String, Vec<Warning>), ConvertError>;
 pub fn convert_to_writer<W: std::io::Write>(
     sql: &str, opts: &Options, w: &mut W,
-) -> Result<(), ConvertError>;
+) -> Result<Vec<Warning>, ConvertError>;
 ```
 
 ### Data flow
